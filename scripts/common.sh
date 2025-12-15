@@ -34,8 +34,9 @@ get_script_dir() {
     echo "$(cd -P "$(dirname "$source")" && pwd)"
 }
 
-SCRIPT_DIR="$(get_script_dir)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+# 이미 정의된 경우 덮어쓰지 않음 (install.sh와 충돌 방지)
+COMMON_SCRIPT_DIR="$(get_script_dir)"
+PROJECT_ROOT="${PROJECT_ROOT:-$(dirname "$COMMON_SCRIPT_DIR")}"
 
 # 백업 비활성화 플래그 (기본: 백업 활성화)
 NO_BACKUP="${NO_BACKUP:-false}"
@@ -146,38 +147,42 @@ backup_existing() {
     return 0
 }
 
-# 파일 복사 with 확인
+# 파일 복사 with 확인 및 에러 캡처
 copy_file() {
     local src="$1"
     local dest="$2"
+    local err_msg
 
     if [[ ! -f "$src" ]]; then
         print_error "소스 파일 없음: $src"
         return 1
     fi
 
-    if cp "$src" "$dest" 2>/dev/null; then
+    if err_msg=$(cp "$src" "$dest" 2>&1); then
         return 0
     else
         print_error "파일 복사 실패: $src -> $dest"
+        [[ -n "$err_msg" ]] && print_error "원인: $err_msg"
         return 1
     fi
 }
 
-# 디렉토리 복사 with 확인
+# 디렉토리 복사 with 확인 및 에러 캡처
 copy_dir() {
     local src="$1"
     local dest="$2"
+    local err_msg
 
     if [[ ! -d "$src" ]]; then
         print_error "소스 디렉토리 없음: $src"
         return 1
     fi
 
-    if cp -r "$src" "$dest" 2>/dev/null; then
+    if err_msg=$(cp -r "$src" "$dest" 2>&1); then
         return 0
     else
         print_error "디렉토리 복사 실패: $src -> $dest"
+        [[ -n "$err_msg" ]] && print_error "원인: $err_msg"
         return 1
     fi
 }

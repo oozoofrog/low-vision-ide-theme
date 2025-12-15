@@ -11,7 +11,10 @@ source "$SCRIPT_DIR/common.sh"
 # ============================================================
 # Ghostty 설치 설정
 # ============================================================
+# XDG 표준 경로 (Linux/macOS 공통)
 GHOSTTY_THEMES_DIR="$HOME/.config/ghostty/themes"
+# macOS Application Support 경로 (대안)
+GHOSTTY_MACOS_ALT_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty/themes"
 GHOSTTY_SOURCE_DIR="$PROJECT_ROOT/ghostty"
 
 # ============================================================
@@ -32,29 +35,41 @@ install_ghostty() {
     fi
 
     local install_count=0
+    local dark_theme="$GHOSTTY_SOURCE_DIR/glareguard-dark"
+    local light_theme="$GHOSTTY_SOURCE_DIR/glareguard-light"
 
     # 다크 테마 설치
-    local dark_theme="$GHOSTTY_SOURCE_DIR/glareguard-dark"
     local dark_dest="$GHOSTTY_THEMES_DIR/glareguard-dark"
     if [[ -f "$dark_theme" ]]; then
-        backup_existing "$dark_dest" "ghostty"
-        if copy_file "$dark_theme" "$dark_dest"; then
-            ((install_count++))
+        if ! backup_existing "$dark_dest" "ghostty"; then
+            print_warning "백업 실패로 다크 테마 설치를 건너뜁니다"
+        elif copy_file "$dark_theme" "$dark_dest"; then
+            ((install_count++)) || true
         fi
     else
         print_warning "다크 테마 파일 없음: $dark_theme"
     fi
 
     # 라이트 테마 설치
-    local light_theme="$GHOSTTY_SOURCE_DIR/glareguard-light"
     local light_dest="$GHOSTTY_THEMES_DIR/glareguard-light"
     if [[ -f "$light_theme" ]]; then
-        backup_existing "$light_dest" "ghostty"
-        if copy_file "$light_theme" "$light_dest"; then
-            ((install_count++))
+        if ! backup_existing "$light_dest" "ghostty"; then
+            print_warning "백업 실패로 라이트 테마 설치를 건너뜁니다"
+        elif copy_file "$light_theme" "$light_dest"; then
+            ((install_count++)) || true
         fi
     else
         print_warning "라이트 테마 파일 없음: $light_theme"
+    fi
+
+    # macOS: Application Support 경로에도 설치 (해당 경로가 존재하는 경우)
+    if is_macos && [[ -d "$(dirname "$GHOSTTY_MACOS_ALT_DIR")" ]]; then
+        print_info "macOS Application Support 경로에도 설치 중..."
+        create_dir_if_needed "$GHOSTTY_MACOS_ALT_DIR" || true
+        if [[ -d "$GHOSTTY_MACOS_ALT_DIR" ]]; then
+            [[ -f "$dark_theme" ]] && copy_file "$dark_theme" "$GHOSTTY_MACOS_ALT_DIR/glareguard-dark" || true
+            [[ -f "$light_theme" ]] && copy_file "$light_theme" "$GHOSTTY_MACOS_ALT_DIR/glareguard-light" || true
+        fi
     fi
 
     # 결과 출력

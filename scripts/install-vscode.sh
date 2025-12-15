@@ -40,7 +40,10 @@ install_vscode() {
 
     # 기존 테마 백업
     if [[ -d "$VSCODE_THEME_DIR" ]]; then
-        backup_existing "$VSCODE_THEME_DIR" "vscode"
+        if ! backup_existing "$VSCODE_THEME_DIR" "vscode"; then
+            print_error "백업 실패로 VS Code 테마 설치를 중단합니다"
+            return "$EXIT_ERROR"
+        fi
     fi
 
     # 테마 디렉토리 생성
@@ -59,21 +62,21 @@ install_vscode() {
     # package.json 복사
     if [[ -f "$VSCODE_SOURCE_DIR/package.json" ]]; then
         if copy_file "$VSCODE_SOURCE_DIR/package.json" "$VSCODE_THEME_DIR/package.json"; then
-            ((install_count++))
+            ((install_count++)) || true
         else
-            ((error_count++))
+            ((error_count++)) || true
         fi
     else
         print_warning "package.json 파일 없음"
-        ((error_count++))
+        ((error_count++)) || true
     fi
 
     # README.md 복사
     if [[ -f "$VSCODE_SOURCE_DIR/README.md" ]]; then
         if copy_file "$VSCODE_SOURCE_DIR/README.md" "$VSCODE_THEME_DIR/README.md"; then
-            ((install_count++))
+            ((install_count++)) || true
         else
-            ((error_count++))
+            ((error_count++)) || true
         fi
     fi
 
@@ -81,9 +84,9 @@ install_vscode() {
     local dark_theme="$VSCODE_SOURCE_DIR/themes/glareguard-dark-color-theme.json"
     if [[ -f "$dark_theme" ]]; then
         if copy_file "$dark_theme" "$VSCODE_THEME_DIR/themes/glareguard-dark-color-theme.json"; then
-            ((install_count++))
+            ((install_count++)) || true
         else
-            ((error_count++))
+            ((error_count++)) || true
         fi
     else
         print_warning "다크 테마 파일 없음: $dark_theme"
@@ -93,9 +96,9 @@ install_vscode() {
     local light_theme="$VSCODE_SOURCE_DIR/themes/glareguard-light-color-theme.json"
     if [[ -f "$light_theme" ]]; then
         if copy_file "$light_theme" "$VSCODE_THEME_DIR/themes/glareguard-light-color-theme.json"; then
-            ((install_count++))
+            ((install_count++)) || true
         else
-            ((error_count++))
+            ((error_count++)) || true
         fi
     else
         print_warning "라이트 테마 파일 없음: $light_theme"

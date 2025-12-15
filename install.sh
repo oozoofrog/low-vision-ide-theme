@@ -172,9 +172,9 @@ run_installations() {
     # VS Code 설치
     if [[ "$INSTALL_VSCODE" == "true" ]]; then
         if source "$SCRIPTS_DIR/install-vscode.sh" && install_vscode; then
-            ((success_count++))
+            ((success_count++)) || true
         else
-            ((fail_count++))
+            ((fail_count++)) || true
         fi
         echo ""
     fi
@@ -182,9 +182,9 @@ run_installations() {
     # Ghostty 설치
     if [[ "$INSTALL_GHOSTTY" == "true" ]]; then
         if source "$SCRIPTS_DIR/install-ghostty.sh" && install_ghostty; then
-            ((success_count++))
+            ((success_count++)) || true
         else
-            ((fail_count++))
+            ((fail_count++)) || true
         fi
         echo ""
     fi
@@ -193,12 +193,12 @@ run_installations() {
     if [[ "$INSTALL_XCODE" == "true" ]]; then
         if ! is_macos; then
             print_warning "Xcode는 macOS에서만 설치할 수 있습니다 (건너뜀)"
-            ((skip_count++))
+            ((skip_count++)) || true
         else
             if source "$SCRIPTS_DIR/install-xcode.sh" && install_xcode; then
-                ((success_count++))
+                ((success_count++)) || true
             else
-                ((fail_count++))
+                ((fail_count++)) || true
             fi
         fi
         echo ""

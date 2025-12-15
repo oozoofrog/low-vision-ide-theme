@@ -44,9 +44,10 @@ install_xcode() {
     local dark_theme="$XCODE_SOURCE_DIR/GlareGuard Dark.xccolortheme"
     local dark_dest="$XCODE_THEMES_DIR/GlareGuard Dark.xccolortheme"
     if [[ -f "$dark_theme" ]]; then
-        backup_existing "$dark_dest" "xcode"
-        if copy_file "$dark_theme" "$dark_dest"; then
-            ((install_count++))
+        if ! backup_existing "$dark_dest" "xcode"; then
+            print_warning "백업 실패로 다크 테마 설치를 건너뜁니다"
+        elif copy_file "$dark_theme" "$dark_dest"; then
+            ((install_count++)) || true
         fi
     else
         print_warning "다크 테마 파일 없음: $dark_theme"
@@ -56,9 +57,10 @@ install_xcode() {
     local light_theme="$XCODE_SOURCE_DIR/GlareGuard Light.xccolortheme"
     local light_dest="$XCODE_THEMES_DIR/GlareGuard Light.xccolortheme"
     if [[ -f "$light_theme" ]]; then
-        backup_existing "$light_dest" "xcode"
-        if copy_file "$light_theme" "$light_dest"; then
-            ((install_count++))
+        if ! backup_existing "$light_dest" "xcode"; then
+            print_warning "백업 실패로 라이트 테마 설치를 건너뜁니다"
+        elif copy_file "$light_theme" "$light_dest"; then
+            ((install_count++)) || true
         fi
     else
         print_warning "라이트 테마 파일 없음: $light_theme"
