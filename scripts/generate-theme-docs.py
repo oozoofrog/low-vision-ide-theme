@@ -248,46 +248,296 @@ def md_table(rows: list[list[str]], headers: list[str]) -> str:
     return "\n".join(out)
 
 
-def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dict[str, list[str]]) -> str:
+def describe_vscode_key(key: str, *, language: str) -> str:
+    ko_specific: dict[str, str] = {
+        "editor.background": "에디터 배경",
+        "editor.foreground": "에디터 기본 텍스트(코드 본문)",
+        "editorCursor.foreground": "커서 색",
+        "editor.selectionBackground": "선택 영역 배경",
+        "editor.selectionHighlightBorder": "선택/하이라이트 테두리(보강용)",
+        "editor.lineHighlightBackground": "현재 라인 배경",
+        "editorLineNumber.foreground": "라인 넘버(비활성)",
+        "editorLineNumber.activeForeground": "라인 넘버(활성 라인)",
+        "editorError.foreground": "오류 표시(스퀴글 등)",
+        "editorWarning.foreground": "경고 표시(스퀴글 등)",
+        "editorInfo.foreground": "정보 표시",
+        "editorHint.foreground": "힌트/성공 표시",
+        "focusBorder": "포커스 테두리(입력/패널 등)",
+        "widget.border": "위젯 테두리(공통)",
+        "textLink.foreground": "링크 텍스트",
+        "textLink.activeForeground": "활성 링크 텍스트",
+    }
+    en_specific: dict[str, str] = {
+        "editor.background": "Editor background",
+        "editor.foreground": "Default editor text (code body)",
+        "editorCursor.foreground": "Cursor",
+        "editor.selectionBackground": "Selection background",
+        "editor.selectionHighlightBorder": "Selection/highlight border (reinforcement)",
+        "editor.lineHighlightBackground": "Current line background",
+        "editorLineNumber.foreground": "Line numbers (inactive)",
+        "editorLineNumber.activeForeground": "Line numbers (active line)",
+        "editorError.foreground": "Error decoration (squiggles, etc.)",
+        "editorWarning.foreground": "Warning decoration (squiggles, etc.)",
+        "editorInfo.foreground": "Info decoration",
+        "editorHint.foreground": "Hint/success decoration",
+        "focusBorder": "Focus border (inputs/panels)",
+        "widget.border": "Widget border (common)",
+        "textLink.foreground": "Link text",
+        "textLink.activeForeground": "Active link text",
+    }
+    specific = ko_specific if language == "ko" else en_specific
+    if key in specific:
+        return specific[key]
+
+    parts = key.split(".")
+    if not parts:
+        return ""
+    area = parts[0]
+    prop = ".".join(parts[1:]) if len(parts) > 1 else ""
     if language == "ko":
-        title = "GlareGuard 테마 색상 레퍼런스"
+        area_ko = {
+            "editor": "에디터",
+            "sideBar": "사이드바",
+            "activityBar": "액티비티 바",
+            "activityBarBadge": "액티비티 바 배지",
+            "badge": "배지",
+            "breadcrumb": "브레드크럼",
+            "editorGutter": "가터",
+            "editorGroup": "에디터 그룹",
+            "editorGroupHeader": "에디터 그룹 헤더",
+            "editorHoverWidget": "호버",
+            "editorSuggestWidget": "자동완성(제안)",
+            "editorOverviewRuler": "오버뷰 룰러",
+            "editorIndentGuide": "인덴트 가이드",
+            "editorRuler": "룰러",
+            "editorWhitespace": "공백 표시",
+            "inputValidation": "입력 검증",
+            "inputOption": "입력 옵션",
+            "panelTitle": "패널 타이틀",
+            "progressBar": "진행 바",
+            "quickInput": "커맨드 팔레트",
+            "quickInputList": "커맨드 팔레트 리스트",
+            "scrollbarSlider": "스크롤바",
+            "peekView": "피크 뷰",
+            "peekViewEditor": "피크 에디터",
+            "peekViewResult": "피크 결과",
+            "peekViewTitle": "피크 타이틀",
+            "sideBarSectionHeader": "사이드바 섹션 헤더",
+            "statusBarItem": "상태바 아이템",
+            "statusBar": "상태바",
+            "tab": "탭",
+            "panel": "패널",
+            "list": "리스트",
+            "input": "입력",
+            "button": "버튼",
+            "dropdown": "드롭다운",
+            "notification": "알림",
+            "notifications": "알림",
+            "peekView": "피크 뷰",
+            "diffEditor": "디프",
+            "gitDecoration": "Git 데코레이션",
+            "terminal": "터미널",
+        }.get(area, area)
+        return f"{area_ko} · {prop}" if prop else area_ko
+    area_en = {
+        "editor": "Editor",
+        "sideBar": "Sidebar",
+        "activityBar": "Activity Bar",
+        "activityBarBadge": "Activity Bar badge",
+        "badge": "Badge",
+        "breadcrumb": "Breadcrumb",
+        "editorGutter": "Gutter",
+        "editorGroup": "Editor group",
+        "editorGroupHeader": "Editor group header",
+        "editorHoverWidget": "Hover",
+        "editorSuggestWidget": "Suggestions",
+        "editorOverviewRuler": "Overview ruler",
+        "editorIndentGuide": "Indent guides",
+        "editorRuler": "Ruler",
+        "editorWhitespace": "Whitespace markers",
+        "inputValidation": "Input validation",
+        "inputOption": "Input option",
+        "panelTitle": "Panel title",
+        "progressBar": "Progress bar",
+        "quickInput": "Command palette",
+        "quickInputList": "Command palette list",
+        "scrollbarSlider": "Scrollbar",
+        "peekView": "Peek View",
+        "peekViewEditor": "Peek editor",
+        "peekViewResult": "Peek results",
+        "peekViewTitle": "Peek title",
+        "sideBarSectionHeader": "Sidebar section header",
+        "statusBarItem": "Status Bar item",
+        "statusBar": "Status Bar",
+        "tab": "Tab",
+        "panel": "Panel",
+        "list": "List",
+        "input": "Input",
+        "button": "Button",
+        "dropdown": "Dropdown",
+        "notification": "Notification",
+        "notifications": "Notifications",
+        "peekView": "Peek View",
+        "diffEditor": "Diff",
+        "gitDecoration": "Git decoration",
+        "terminal": "Terminal",
+    }.get(area, area)
+    return f"{area_en} · {prop}" if prop else area_en
+
+
+def describe_ghostty_key(key: str, *, language: str) -> str:
+    ko: dict[str, str] = {
+        "background": "터미널 배경",
+        "foreground": "터미널 기본 텍스트",
+        "cursor-color": "커서",
+        "cursor-text": "커서 위 텍스트",
+        "selection-background": "선택 영역 배경",
+        "selection-foreground": "선택 영역 텍스트",
+        "bold-color": "굵은 텍스트(볼드) 색",
+        "split-divider-color": "분할 경계선",
+        "unfocused-split-fill": "비활성 split 배경(보조)",
+        "minimum-contrast": "최소 대비(렌더링 정책)",
+        "palette": "ANSI 16색 팔레트",
+    }
+    en: dict[str, str] = {
+        "background": "Terminal background",
+        "foreground": "Default terminal text",
+        "cursor-color": "Cursor",
+        "cursor-text": "Text under cursor",
+        "selection-background": "Selection background",
+        "selection-foreground": "Selection text",
+        "bold-color": "Bold text color",
+        "split-divider-color": "Split divider",
+        "unfocused-split-fill": "Unfocused split fill (secondary)",
+        "minimum-contrast": "Minimum contrast (rendering policy)",
+        "palette": "ANSI 16-color palette",
+    }
+    return (ko if language == "ko" else en).get(key, "")
+
+
+def describe_xcode_key(key: str, *, language: str) -> str:
+    ko: dict[str, str] = {
+        "DVTSourceTextBackground": "소스 에디터 배경",
+        "DVTSourceTextSelectionColor": "소스 에디터 선택 영역",
+        "DVTSourceTextInsertionPointColor": "삽입점(커서)",
+        "DVTSourceTextCurrentLineHighlightColor": "현재 라인 하이라이트",
+        "DVTSourceTextBlockDimBackgroundColor": "블록 dim 배경(보조 영역)",
+        "DVTSourceTextInvisiblesColor": "공백/보이지 않는 문자",
+        "DVTConsoleTextBackgroundColor": "콘솔 배경",
+        "DVTConsoleTextSelectionColor": "콘솔 선택 영역",
+        "DVTConsoleTextInsertionPointColor": "콘솔 커서",
+    }
+    en: dict[str, str] = {
+        "DVTSourceTextBackground": "Source editor background",
+        "DVTSourceTextSelectionColor": "Source editor selection",
+        "DVTSourceTextInsertionPointColor": "Insertion point (cursor)",
+        "DVTSourceTextCurrentLineHighlightColor": "Current line highlight",
+        "DVTSourceTextBlockDimBackgroundColor": "Block dim background (secondary)",
+        "DVTSourceTextInvisiblesColor": "Invisibles (whitespace markers)",
+        "DVTConsoleTextBackgroundColor": "Console background",
+        "DVTConsoleTextSelectionColor": "Console selection",
+        "DVTConsoleTextInsertionPointColor": "Console cursor",
+    }
+    return (ko if language == "ko" else en).get(key, "")
+
+
+def describe_xcode_syntax_key(key: str, *, language: str) -> str:
+    if not key.startswith("xcode.syntax."):
+        return ""
+    tail = key.removeprefix("xcode.syntax.")
+    ko_map: dict[str, str] = {
+        "plain": "일반 텍스트",
+        "comment": "주석",
+        "comment.doc": "문서 주석",
+        "comment.doc.keyword": "문서 주석 키워드",
+        "keyword": "키워드",
+        "string": "문자열",
+        "character": "문자",
+        "number": "숫자",
+        "preprocessor": "전처리기",
+        "regex": "정규식",
+        "regex.capturename": "정규식 캡처 이름",
+        "regex.charname": "정규식 문자 이름",
+        "regex.number": "정규식 숫자",
+        "regex.other": "정규식 기타",
+        "attribute": "어트리뷰트",
+        "mark": "마크/섹션",
+        "markup.code": "마크업 코드",
+        "url": "URL",
+        "declaration.other": "선언(기타)",
+        "declaration.type": "선언(타입)",
+        "identifier.class": "식별자(클래스)",
+        "identifier.class.system": "식별자(시스템 클래스)",
+        "identifier.constant": "식별자(상수)",
+        "identifier.constant.system": "식별자(시스템 상수)",
+        "identifier.function": "식별자(함수)",
+        "identifier.function.system": "식별자(시스템 함수)",
+        "identifier.macro": "식별자(매크로)",
+        "identifier.macro.system": "식별자(시스템 매크로)",
+        "identifier.type": "식별자(타입)",
+        "identifier.type.system": "식별자(시스템 타입)",
+        "identifier.variable": "식별자(변수)",
+        "identifier.variable.system": "식별자(시스템 변수)",
+    }
+    en_map: dict[str, str] = {
+        "plain": "Plain text",
+        "comment": "Comment",
+        "comment.doc": "Doc comment",
+        "comment.doc.keyword": "Doc comment keyword",
+        "keyword": "Keyword",
+        "string": "String",
+        "character": "Character",
+        "number": "Number",
+        "preprocessor": "Preprocessor",
+        "regex": "Regex",
+        "regex.capturename": "Regex capture name",
+        "regex.charname": "Regex character name",
+        "regex.number": "Regex number",
+        "regex.other": "Regex other",
+        "attribute": "Attribute",
+        "mark": "Mark/section",
+        "markup.code": "Markup code",
+        "url": "URL",
+        "declaration.other": "Declaration (other)",
+        "declaration.type": "Declaration (type)",
+        "identifier.class": "Identifier (class)",
+        "identifier.class.system": "Identifier (system class)",
+        "identifier.constant": "Identifier (constant)",
+        "identifier.constant.system": "Identifier (system constant)",
+        "identifier.function": "Identifier (function)",
+        "identifier.function.system": "Identifier (system function)",
+        "identifier.macro": "Identifier (macro)",
+        "identifier.macro.system": "Identifier (system macro)",
+        "identifier.type": "Identifier (type)",
+        "identifier.type.system": "Identifier (system type)",
+        "identifier.variable": "Identifier (variable)",
+        "identifier.variable.system": "Identifier (system variable)",
+    }
+    return (ko_map if language == "ko" else en_map).get(tail, tail)
+
+
+def generate_vscode_doc(*, language: str, sources: dict[str, Any]) -> str:
+    if language == "ko":
+        title = "VS Code — GlareGuard 테마 색상"
         generated = "자동 생성 문서 — 수동 편집하지 말고 `python3 scripts/generate-theme-docs.py`로 갱신하세요."
-        palette_title = "전체 팔레트(플랫폼 합집합)"
-        variant_title = "테마 변형"
-        platform_vscode = "VS Code"
-        platform_ghostty = "Ghostty"
-        platform_xcode = "Xcode"
         details_all = "전체 목록 보기"
+        col_desc = "설명"
+        ui_summary_title = "UI (요약)"
     else:
-        title = "GlareGuard Theme Color Reference"
+        title = "VS Code — GlareGuard Theme Colors"
         generated = "Auto-generated — do not edit by hand; run `python3 scripts/generate-theme-docs.py` to update."
-        palette_title = "Global palette (union across platforms)"
-        variant_title = "Theme variants"
-        platform_vscode = "VS Code"
-        platform_ghostty = "Ghostty"
-        platform_xcode = "Xcode"
         details_all = "Show full list"
+        col_desc = "Description"
+        ui_summary_title = "UI (summary)"
 
     lines: list[str] = [f"# {title}", "", generated, ""]
 
-    all_colors = sorted(usage_by_color.keys())
-    palette_rows: list[list[str]] = []
-    for c in all_colors:
-        usages = usage_by_color[c]
-        sample = ", ".join(usages[:4]) + (f" (+{len(usages) - 4})" if len(usages) > 4 else "")
-        palette_rows.append([swatch_rel_img(c), f"`{c}`", f"`{len(usages)}`", md_escape(sample)])
-    lines.extend([f"## {palette_title}", "", md_table(palette_rows, ["", "Hex", "Count", "Examples"]), ""])
-
-    lines.append(f"## {variant_title}")
-    lines.append("")
-
     for variant_key in ["dark", "light"]:
         variant = sources[variant_key]
-        lines.append(f"### {variant['name']}")
+        vscode = variant["vscode"]
+        lines.append(f"## {variant['name']}")
         lines.append("")
 
-        # VS Code
-        vscode = variant["vscode"]
         ui_key_order = [
             "editor.background",
             "editor.foreground",
@@ -306,20 +556,21 @@ def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dic
         for k in ui_key_order:
             v = vscode["colors"].get(k)
             if isinstance(v, str) and normalize_hex(v):
-                ui_rows.append([swatch_rel_img(normalize_hex(v) or v), f"`{k}`", f"`{normalize_hex(v)}`"])
-        lines.extend([f"#### {platform_vscode}", "", md_table(ui_rows, ["", "Key", "Value"]), ""])
+                v_norm = normalize_hex(v) or v
+                ui_rows.append([swatch_rel_img(v_norm), f"`{k}`", f"`{v_norm}`", md_escape(describe_vscode_key(k, language=language))])
+        lines.extend([f"### {ui_summary_title}", "", md_table(ui_rows, ["", "Key", "Value", col_desc]), ""])
 
         all_ui_rows: list[list[str]] = []
         for k in sorted(vscode["colors"].keys()):
             v = vscode["colors"][k]
             if isinstance(v, str) and normalize_hex(v):
                 v_norm = normalize_hex(v) or v
-                all_ui_rows.append([swatch_rel_img(v_norm), f"`{k}`", f"`{v_norm}`"])
+                all_ui_rows.append([swatch_rel_img(v_norm), f"`{k}`", f"`{v_norm}`", md_escape(describe_vscode_key(k, language=language))])
         lines.extend(
             [
                 f"<details><summary>{details_all} (UI colors)</summary>",
                 "",
-                md_table(all_ui_rows, ["", "Key", "Value"]),
+                md_table(all_ui_rows, ["", "Key", "Value", col_desc]),
                 "",
                 "</details>",
                 "",
@@ -363,13 +614,7 @@ def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dic
         for k, v in flatten_semantic_token_colors(vscode.get("semanticTokenColors", {})):
             fg = v.get("foreground") if isinstance(v, dict) else v
             fg_norm = normalize_hex(fg) if isinstance(fg, str) else None
-            semantic_rows.append(
-                [
-                    swatch_rel_img(fg_norm) if fg_norm else "",
-                    f"`{md_escape(k)}`",
-                    f"`{fg_norm}`" if fg_norm else "",
-                ]
-            )
+            semantic_rows.append([swatch_rel_img(fg_norm) if fg_norm else "", f"`{md_escape(k)}`", f"`{fg_norm}`" if fg_norm else ""])
         lines.extend(
             [
                 f"<details><summary>{details_all} (Semantic token colors)</summary>",
@@ -381,8 +626,30 @@ def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dic
             ]
         )
 
-        # Ghostty
+    lines.append("")
+    return "\n".join(lines)
+
+
+def generate_ghostty_doc(*, language: str, sources: dict[str, Any]) -> str:
+    if language == "ko":
+        title = "Ghostty — GlareGuard 테마 색상"
+        generated = "자동 생성 문서 — 수동 편집하지 말고 `python3 scripts/generate-theme-docs.py`로 갱신하세요."
+        details_all = "전체 목록 보기"
+        col_desc = "설명"
+    else:
+        title = "Ghostty — GlareGuard Theme Colors"
+        generated = "Auto-generated — do not edit by hand; run `python3 scripts/generate-theme-docs.py` to update."
+        details_all = "Show full list"
+        col_desc = "Description"
+
+    lines: list[str] = [f"# {title}", "", generated, ""]
+
+    for variant_key in ["dark", "light"]:
+        variant = sources[variant_key]
         ghostty = variant["ghostty"]
+        lines.append(f"## {variant['name']}")
+        lines.append("")
+
         ghost_base_keys = [
             "background",
             "foreground",
@@ -392,14 +659,18 @@ def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dic
             "selection-foreground",
             "bold-color",
             "split-divider-color",
+            "unfocused-split-fill",
+            "minimum-contrast",
         ]
         ghost_rows: list[list[str]] = []
         for k in ghost_base_keys:
             v = ghostty.get(k)
             if isinstance(v, str) and normalize_hex(v):
                 v_norm = normalize_hex(v) or v
-                ghost_rows.append([swatch_rel_img(v_norm), f"`{k}`", f"`{v_norm}`"])
-        lines.extend([f"#### {platform_ghostty}", "", md_table(ghost_rows, ["", "Key", "Value"]), ""])
+                ghost_rows.append([swatch_rel_img(v_norm), f"`{k}`", f"`{v_norm}`", md_escape(describe_ghostty_key(k, language=language))])
+            elif v is not None and k == "minimum-contrast":
+                ghost_rows.append(["", f"`{k}`", f"`{md_escape(str(v))}`", md_escape(describe_ghostty_key(k, language=language))])
+        lines.extend(["### Base", "", md_table(ghost_rows, ["", "Key", "Value", col_desc]), ""])
 
         palette_rows_ghost: list[list[str]] = []
         palette = ghostty.get("palette", {})
@@ -408,20 +679,42 @@ def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dic
                 v = palette.get(idx)
                 if isinstance(v, str) and normalize_hex(v):
                     v_norm = normalize_hex(v) or v
-                    palette_rows_ghost.append([f"`{idx}`", swatch_rel_img(v_norm), f"`{v_norm}`"])
+                    palette_rows_ghost.append([f"`{idx}`", swatch_rel_img(v_norm), f"`{v_norm}`", md_escape(describe_ghostty_key("palette", language=language))])
         lines.extend(
             [
                 f"<details><summary>{details_all} (ANSI 16 palette)</summary>",
                 "",
-                md_table(palette_rows_ghost, ["Index", "", "Value"]),
+                md_table(palette_rows_ghost, ["Index", "", "Value", col_desc]),
                 "",
                 "</details>",
                 "",
             ]
         )
 
-        # Xcode
+    lines.append("")
+    return "\n".join(lines)
+
+
+def generate_xcode_doc(*, language: str, sources: dict[str, Any]) -> str:
+    if language == "ko":
+        title = "Xcode — GlareGuard 테마 색상"
+        generated = "자동 생성 문서 — 수동 편집하지 말고 `python3 scripts/generate-theme-docs.py`로 갱신하세요."
+        details_all = "전체 목록 보기"
+        col_desc = "설명"
+    else:
+        title = "Xcode — GlareGuard Theme Colors"
+        generated = "Auto-generated — do not edit by hand; run `python3 scripts/generate-theme-docs.py` to update."
+        details_all = "Show full list"
+        col_desc = "Description"
+
+    lines: list[str] = [f"# {title}", "", generated, ""]
+
+    for variant_key in ["dark", "light"]:
+        variant = sources[variant_key]
         xcode = variant["xcode"]
+        lines.append(f"## {variant['name']}")
+        lines.append("")
+
         xcode_key_order = [
             "DVTSourceTextBackground",
             "DVTSourceTextSelectionColor",
@@ -439,8 +732,8 @@ def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dic
             raw_str = raw if isinstance(raw, str) else None
             hx = xcode_rgba_string_to_hex(raw_str) if raw_str else None
             if hx:
-                x_rows.append([swatch_rel_img(hx), f"`{k}`", f"`{hx}`", f"`{raw_str}`"])
-        lines.extend([f"#### {platform_xcode}", "", md_table(x_rows, ["", "Key", "Hex", "RGBA(0..1)"]), ""])
+                x_rows.append([swatch_rel_img(hx), f"`{k}`", f"`{hx}`", f"`{raw_str}`", md_escape(describe_xcode_key(k, language=language))])
+        lines.extend(["### Base", "", md_table(x_rows, ["", "Key", "Hex", "RGBA(0..1)", col_desc]), ""])
 
         syntax = xcode.get("DVTSourceTextSyntaxColors", {})
         syntax_rows: list[list[str]] = []
@@ -450,18 +743,45 @@ def generate_docs(*, language: str, sources: dict[str, Any], usage_by_color: dic
                 raw_str = raw if isinstance(raw, str) else None
                 hx = xcode_rgba_string_to_hex(raw_str) if raw_str else None
                 if hx:
-                    syntax_rows.append([swatch_rel_img(hx), f"`{k}`", f"`{hx}`", f"`{raw_str}`"])
+                    syntax_rows.append([swatch_rel_img(hx), f"`{k}`", f"`{hx}`", f"`{raw_str}`", md_escape(describe_xcode_syntax_key(k, language=language))])
         lines.extend(
             [
                 f"<details><summary>{details_all} (Syntax colors)</summary>",
                 "",
-                md_table(syntax_rows, ["", "Key", "Hex", "RGBA(0..1)"]),
+                md_table(syntax_rows, ["", "Key", "Hex", "RGBA(0..1)", col_desc]),
                 "",
                 "</details>",
                 "",
             ]
         )
 
+    lines.append("")
+    return "\n".join(lines)
+
+
+def generate_index_doc(*, language: str) -> str:
+    if language == "ko":
+        title = "GlareGuard 테마 색상 문서"
+        generated = "자동 생성 문서 — 수동 편집하지 말고 `python3 scripts/generate-theme-docs.py`로 갱신하세요."
+        intro = "플랫폼별 색상 문서:"
+        items = [
+            ("VS Code", "vscode-colors.ko.md"),
+            ("Ghostty", "ghostty-colors.ko.md"),
+            ("Xcode", "xcode-colors.ko.md"),
+        ]
+    else:
+        title = "GlareGuard Theme Color Docs"
+        generated = "Auto-generated — do not edit by hand; run `python3 scripts/generate-theme-docs.py` to update."
+        intro = "Platform-specific docs:"
+        items = [
+            ("VS Code", "vscode-colors.md"),
+            ("Ghostty", "ghostty-colors.md"),
+            ("Xcode", "xcode-colors.md"),
+        ]
+
+    lines: list[str] = [f"# {title}", "", generated, "", intro, ""]
+    for name, file_name in items:
+        lines.append(f"- {name}: [{file_name}]({file_name})")
     lines.append("")
     return "\n".join(lines)
 
@@ -573,8 +893,17 @@ def main(argv: list[str]) -> int:
         swatch_changed |= write_text_if_changed(file_path, svg_swatch(rgba))
 
     outputs: list[tuple[Path, str]] = []
-    outputs.append((DOCS_DIR / "theme-colors.md", generate_docs(language="en", sources=sources, usage_by_color=usage_by_color)))
-    outputs.append((DOCS_DIR / "theme-colors.ko.md", generate_docs(language="ko", sources=sources, usage_by_color=usage_by_color)))
+    outputs.append((DOCS_DIR / "theme-colors.md", generate_index_doc(language="en")))
+    outputs.append((DOCS_DIR / "theme-colors.ko.md", generate_index_doc(language="ko")))
+
+    outputs.append((DOCS_DIR / "vscode-colors.md", generate_vscode_doc(language="en", sources=sources)))
+    outputs.append((DOCS_DIR / "vscode-colors.ko.md", generate_vscode_doc(language="ko", sources=sources)))
+
+    outputs.append((DOCS_DIR / "ghostty-colors.md", generate_ghostty_doc(language="en", sources=sources)))
+    outputs.append((DOCS_DIR / "ghostty-colors.ko.md", generate_ghostty_doc(language="ko", sources=sources)))
+
+    outputs.append((DOCS_DIR / "xcode-colors.md", generate_xcode_doc(language="en", sources=sources)))
+    outputs.append((DOCS_DIR / "xcode-colors.ko.md", generate_xcode_doc(language="ko", sources=sources)))
 
     changed_any = swatch_changed
     for path, content in outputs:
