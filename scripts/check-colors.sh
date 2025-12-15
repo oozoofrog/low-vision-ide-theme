@@ -1,0 +1,87 @@
+#!/bin/bash
+# Ghostty 테마 색상 확인 스크립트
+# ANSI 16색 팔레트를 시각적으로 표시합니다
+
+echo ""
+echo "══════════════════════════════════════════════════════════"
+echo "              Ghostty 테마 색상 확인"
+echo "══════════════════════════════════════════════════════════"
+
+echo ""
+echo "┌─────────────────────────────────────────────────────────┐"
+echo "│  기본 색상 (0-7)                                        │"
+echo "├─────────────────────────────────────────────────────────┤"
+
+# 기본 색상 (용도 포함) - 텍스트에도 색상 적용
+printf "│ \e[40m  \e[0m \e[30m0: Black      배경/기본 검정\e[0m                      │\n"
+printf "│ \e[41m  \e[0m \e[31m1: Red        오류/삭제\e[0m                            │\n"
+printf "│ \e[42m  \e[0m \e[32m2: Green      성공/추가\e[0m                            │\n"
+printf "│ \e[43m  \e[0m \e[33m3: Yellow     경고/수정\e[0m                            │\n"
+printf "│ \e[44m  \e[0m \e[34m4: Blue       정보/링크\e[0m                            │\n"
+printf "│ \e[45m  \e[0m \e[35m5: Magenta    특수/키워드\e[0m                          │\n"
+printf "│ \e[46m  \e[0m \e[36m6: Cyan       보조 정보\e[0m                            │\n"
+printf "│ \e[47m  \e[0m \e[37m7: White      보조 텍스트\e[0m                          │\n"
+echo "└─────────────────────────────────────────────────────────┘"
+
+echo ""
+echo "┌─────────────────────────────────────────────────────────┐"
+echo "│  밝은 색상 (8-15) - Bold/Bright 텍스트용               │"
+echo "├─────────────────────────────────────────────────────────┤"
+printf "│ \e[100m  \e[0m \e[90m8:  Br.Black   주석/비활성\e[0m                         │\n"
+printf "│ \e[101m  \e[0m \e[91m9:  Br.Red     강조 오류\e[0m                           │\n"
+printf "│ \e[102m  \e[0m \e[92m10: Br.Green   강조 성공\e[0m                           │\n"
+printf "│ \e[103m  \e[0m \e[93m11: Br.Yellow  강조 경고\e[0m                           │\n"
+printf "│ \e[104m  \e[0m \e[94m12: Br.Blue    강조 정보\e[0m                           │\n"
+printf "│ \e[105m  \e[0m \e[95m13: Br.Magenta 강조 특수\e[0m                           │\n"
+printf "│ \e[106m  \e[0m \e[96m14: Br.Cyan    강조 보조\e[0m                           │\n"
+printf "│ \e[107m  \e[0m \e[97m15: Br.White   강조 텍스트\e[0m                         │\n"
+echo "└─────────────────────────────────────────────────────────┘"
+
+echo ""
+echo "┌──────────────────────────────────────────────────────────────┐"
+echo "│  기본 배경 위 텍스트 가시성 테스트 (기본 ANSI)               │"
+echo "├──────────────────────────────────────────────────────────────┤"
+
+# 기본 색상 (0-7) - 30-37
+printf "│ \e[40m    \e[0m \e[30m 0 Black      Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[41m    \e[0m \e[31m 1 Red        Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[42m    \e[0m \e[32m 2 Green      Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[43m    \e[0m \e[33m 3 Yellow     Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[44m    \e[0m \e[34m 4 Blue       Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[45m    \e[0m \e[35m 5 Magenta    Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[46m    \e[0m \e[36m 6 Cyan       Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[47m    \e[0m \e[37m 7 White      Sample Text 샘플 텍스트\e[0m      │\n"
+echo "├──────────────────────────────────────────────────────────────┤"
+# 밝은 색상 (8-15) - 90-97
+printf "│ \e[100m    \e[0m \e[90m 8 Br.Black   Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[101m    \e[0m \e[91m 9 Br.Red     Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[102m    \e[0m \e[92m10 Br.Green   Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[103m    \e[0m \e[93m11 Br.Yellow  Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[104m    \e[0m \e[94m12 Br.Blue    Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[105m    \e[0m \e[95m13 Br.Magenta Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[106m    \e[0m \e[96m14 Br.Cyan    Sample Text 샘플 텍스트\e[0m      │\n"
+printf "│ \e[107m    \e[0m \e[97m15 Br.White   Sample Text 샘플 텍스트\e[0m      │\n"
+echo "└──────────────────────────────────────────────────────────────┘"
+
+echo ""
+echo "┌─────────────────────────────────────────────────────────┐"
+echo "│  특수 색상                                              │"
+echo "├─────────────────────────────────────────────────────────┤"
+printf "│ 기본 전경색: \e[39m████████\e[0m  (foreground)                   │\n"
+printf "│ 기본 배경색: \e[7m        \e[0m  (background, 반전표시)          │\n"
+printf "│ Bold 색상:   \e[1m████████\e[0m  (bold-color)                    │\n"
+printf "│ 선택 영역:   \e[7m 선택됨 \e[0m  (selection)                     │\n"
+echo "└─────────────────────────────────────────────────────────┘"
+
+echo ""
+echo "┌─────────────────────────────────────────────────────────┐"
+echo "│  색상 블록 비교 (배경색으로 표시)                       │"
+echo "├─────────────────────────────────────────────────────────┤"
+printf "│ 기본:  "
+for i in {0..7}; do printf "\e[48;5;${i}m  \e[0m"; done
+printf "                              │\n"
+printf "│ 밝은:  "
+for i in {8..15}; do printf "\e[48;5;${i}m  \e[0m"; done
+printf "                              │\n"
+echo "└─────────────────────────────────────────────────────────┘"
+echo ""

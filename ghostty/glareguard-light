@@ -11,28 +11,34 @@ cursor-text = #E8E4DF
 selection-background = #C9D6E6
 selection-foreground = #2D3748
 
-# ANSI 16색 팔레트 (저채도/눈부심 억제)
+# 추가 색상 옵션
+bold-color = #1A202C
+minimum-contrast = 1.5
+unfocused-split-fill = #D9D5D0
+split-divider-color = #98A2B3
+
+# ANSI 16색 팔레트 (색상 구분 강화 + 눈부심 억제)
 palette = 0=#2D3748
-palette = 8=#475467
+palette = 8=#5A6578
 
-palette = 1=#B42318
-palette = 9=#D92D20
+palette = 1=#D32F2F
+palette = 9=#E53935
 
-palette = 2=#2F6F57
-palette = 10=#3D8C6D
+palette = 2=#388E3C
+palette = 10=#43A047
 
-palette = 3=#B87900
-palette = 11=#D6A100
+palette = 3=#E6A117
+palette = 11=#FFB300
 
-palette = 4=#1B6FD1
-palette = 12=#155AA9
+palette = 4=#1565C0
+palette = 12=#1E88E5
 
-palette = 5=#6D5BD0
-palette = 13=#8A7BDF
+palette = 5=#7B1FA2
+palette = 13=#9C27B0
 
-palette = 6=#0F766E
-palette = 14=#158A80
+palette = 6=#0097A7
+palette = 14=#00BCD4
 
 palette = 7=#667085
-palette = 15=#F7F5F2
+palette = 15=#5C6370
 
