@@ -11,6 +11,12 @@ cursor-text = #0F1115
 selection-background = #263042
 selection-foreground = #E6E8EE
 
+# 추가 색상 옵션
+bold-color = #F0F2F7
+minimum-contrast = 4.5
+unfocused-split-fill = #1A1D24
+split-divider-color = #3D4654
+
 # ANSI 16색 팔레트 (저채도/눈부심 억제)
 palette = 0=#0F1115
 palette = 8=#2A3346
