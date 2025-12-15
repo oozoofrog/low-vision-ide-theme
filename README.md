@@ -1,6 +1,6 @@
 # Low Vision IDE Themes
 
-This repository delivers IDE/editor themes designed for glaucoma users who face reduced contrast sensitivity, glare, and eye fatigue, prioritizing readability and ease of navigation/error recognition during long coding sessions.
+This repository delivers IDE/editor themes for **Low Vision** users who often face reduced contrast sensitivity, glare sensitivity, and eye fatigue—prioritizing readability and ease of navigation/error recognition during long coding sessions.
 
 > The original Korean reference lives in `README.ko.md`; this file serves as the English-first documentation.
 
@@ -13,7 +13,20 @@ This repository delivers IDE/editor themes designed for glaucoma users who face 
 - Neovim (planned): `neovim/`
 - Sublime Text (planned): `sublime-text/`
 
-## Theme Principles (Glaucoma IDE Theme Spec v1 summary)
+## Who this is for
+- “Low Vision” here is used broadly: visual function that remains reduced even after standard correction, with large person-to-person variation.
+- The design focuses on common interaction pain points:
+  - reduced contrast sensitivity (UI boundaries and code structure are harder to parse)
+  - glare/halation sensitivity (bright backgrounds and punchy accents feel harsh)
+  - faster visual fatigue during prolonged work
+- Examples that may fall under this umbrella include glaucoma, age-related macular degeneration, diabetic retinopathy, cataracts, retinitis pigmentosa, and more.
+- Note: This is not medical advice—this is an open-source set of themes and design principles.
+
+### Where “glaucoma” fits
+- The initial design notes and constraints started from glaucoma-driven use cases (contrast sensitivity loss, glare, fatigue).
+- The current documentation generalizes those requirements to Low Vision more broadly.
+
+## Theme Principles (Low Vision IDE Theme Spec v1 summary)
 
 ### 1) Core objectives
 - **Readability first:** Code reading, navigation, and diagnostic awareness must be fast and less tiring.
