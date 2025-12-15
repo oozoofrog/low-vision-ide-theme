@@ -67,8 +67,16 @@ install_ghostty() {
         print_info "macOS Application Support 경로에도 설치 중..."
         create_dir_if_needed "$GHOSTTY_MACOS_ALT_DIR" || true
         if [[ -d "$GHOSTTY_MACOS_ALT_DIR" ]]; then
-            [[ -f "$dark_theme" ]] && copy_file "$dark_theme" "$GHOSTTY_MACOS_ALT_DIR/glareguard-dark" || true
-            [[ -f "$light_theme" ]] && copy_file "$light_theme" "$GHOSTTY_MACOS_ALT_DIR/glareguard-light" || true
+            # 다크 테마 (백업 후 복사)
+            if [[ -f "$dark_theme" ]]; then
+                backup_existing "$GHOSTTY_MACOS_ALT_DIR/glareguard-dark" "ghostty-macos" || true
+                copy_file "$dark_theme" "$GHOSTTY_MACOS_ALT_DIR/glareguard-dark" || true
+            fi
+            # 라이트 테마 (백업 후 복사)
+            if [[ -f "$light_theme" ]]; then
+                backup_existing "$GHOSTTY_MACOS_ALT_DIR/glareguard-light" "ghostty-macos" || true
+                copy_file "$light_theme" "$GHOSTTY_MACOS_ALT_DIR/glareguard-light" || true
+            fi
         fi
     fi
 
