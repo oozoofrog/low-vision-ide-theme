@@ -47,7 +47,7 @@ install_xcode() {
         if ! backup_existing "$dark_dest" "xcode"; then
             print_warning "백업 실패로 다크 테마 설치를 건너뜁니다"
         elif copy_file "$dark_theme" "$dark_dest"; then
-            ((install_count++)) || true
+            install_count=$((install_count + 1))
         fi
     else
         print_warning "다크 테마 파일 없음: $dark_theme"
@@ -60,7 +60,7 @@ install_xcode() {
         if ! backup_existing "$light_dest" "xcode"; then
             print_warning "백업 실패로 라이트 테마 설치를 건너뜁니다"
         elif copy_file "$light_theme" "$light_dest"; then
-            ((install_count++)) || true
+            install_count=$((install_count + 1))
         fi
     else
         print_warning "라이트 테마 파일 없음: $light_theme"
@@ -68,7 +68,7 @@ install_xcode() {
 
     # 결과 출력
     if [[ $install_count -gt 0 ]]; then
-        print_success "Xcode 테마 설치 완료 ($install_count개 파일)"
+        print_success "Xcode 테마 설치 완료 (${install_count}개 파일)"
         echo ""
         print_info "테마를 적용하려면:"
         echo "    1. Xcode를 재시작하세요"

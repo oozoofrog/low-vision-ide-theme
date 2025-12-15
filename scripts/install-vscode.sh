@@ -57,13 +57,13 @@ install_vscode() {
     fi
 
     local install_count=0
-    local critical_error=false  # 필수 파일 실패 여부
-    local theme_count=0         # 설치된 테마 파일 수
+    local critical_error=false
+    local theme_count=0
 
     # package.json 복사 (필수 파일)
     if [[ -f "$VSCODE_SOURCE_DIR/package.json" ]]; then
         if copy_file "$VSCODE_SOURCE_DIR/package.json" "$VSCODE_THEME_DIR/package.json"; then
-            ((install_count++)) || true
+            install_count=$((install_count + 1))
         else
             print_error "package.json 복사 실패 - VS Code에서 테마를 인식할 수 없습니다"
             critical_error=true
@@ -76,7 +76,7 @@ install_vscode() {
     # README.md 복사 (선택 파일)
     if [[ -f "$VSCODE_SOURCE_DIR/README.md" ]]; then
         if copy_file "$VSCODE_SOURCE_DIR/README.md" "$VSCODE_THEME_DIR/README.md"; then
-            ((install_count++)) || true
+            install_count=$((install_count + 1))
         fi
     fi
 
@@ -84,8 +84,8 @@ install_vscode() {
     local dark_theme="$VSCODE_SOURCE_DIR/themes/glareguard-dark-color-theme.json"
     if [[ -f "$dark_theme" ]]; then
         if copy_file "$dark_theme" "$VSCODE_THEME_DIR/themes/glareguard-dark-color-theme.json"; then
-            ((install_count++)) || true
-            ((theme_count++)) || true
+            install_count=$((install_count + 1))
+            theme_count=$((theme_count + 1))
         fi
     else
         print_warning "다크 테마 파일 없음: $dark_theme"
@@ -95,15 +95,14 @@ install_vscode() {
     local light_theme="$VSCODE_SOURCE_DIR/themes/glareguard-light-color-theme.json"
     if [[ -f "$light_theme" ]]; then
         if copy_file "$light_theme" "$VSCODE_THEME_DIR/themes/glareguard-light-color-theme.json"; then
-            ((install_count++)) || true
-            ((theme_count++)) || true
+            install_count=$((install_count + 1))
+            theme_count=$((theme_count + 1))
         fi
     else
         print_warning "라이트 테마 파일 없음: $light_theme"
     fi
 
     # 결과 출력
-    # 필수 파일(package.json) 실패 또는 테마 파일 0개면 실패
     if [[ "$critical_error" == "true" ]]; then
         print_error "VS Code 테마 설치 실패 (필수 파일 누락)"
         return "$EXIT_ERROR"
@@ -111,7 +110,7 @@ install_vscode() {
         print_error "VS Code 테마 설치 실패 (테마 파일 없음)"
         return "$EXIT_ERROR"
     else
-        print_success "VS Code 테마 설치 완료 ($install_count개 파일, 테마 $theme_count개)"
+        print_success "VS Code 테마 설치 완료 (${install_count}개 파일, 테마 ${theme_count}개)"
         echo ""
         print_info "테마를 적용하려면:"
         echo "    1. VS Code를 재시작하세요"

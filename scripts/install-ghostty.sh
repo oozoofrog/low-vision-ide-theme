@@ -44,7 +44,7 @@ install_ghostty() {
         if ! backup_existing "$dark_dest" "ghostty"; then
             print_warning "백업 실패로 다크 테마 설치를 건너뜁니다"
         elif copy_file "$dark_theme" "$dark_dest"; then
-            ((install_count++)) || true
+            install_count=$((install_count + 1))
         fi
     else
         print_warning "다크 테마 파일 없음: $dark_theme"
@@ -56,7 +56,7 @@ install_ghostty() {
         if ! backup_existing "$light_dest" "ghostty"; then
             print_warning "백업 실패로 라이트 테마 설치를 건너뜁니다"
         elif copy_file "$light_theme" "$light_dest"; then
-            ((install_count++)) || true
+            install_count=$((install_count + 1))
         fi
     else
         print_warning "라이트 테마 파일 없음: $light_theme"
@@ -82,7 +82,7 @@ install_ghostty() {
 
     # 결과 출력
     if [[ $install_count -gt 0 ]]; then
-        print_success "Ghostty 테마 설치 완료 ($install_count개 파일)"
+        print_success "Ghostty 테마 설치 완료 (${install_count}개 파일)"
         echo ""
         print_info "테마를 적용하려면 ~/.config/ghostty/config에 아래를 추가하세요:"
         echo ""
