@@ -2,6 +2,10 @@
 # GlareGuard Theme Installer - Common Functions
 # 공통 함수 라이브러리
 
+# 중복 로드 방지 가드
+[[ -n "${_GLAREGUARD_COMMON_LOADED:-}" ]] && return 0
+_GLAREGUARD_COMMON_LOADED=1
+
 set -euo pipefail
 
 # ============================================================
