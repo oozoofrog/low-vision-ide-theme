@@ -1,4 +1,4 @@
-# themes
+# Low Vision IDE Themes
 
 This repository delivers IDE/editor themes designed for glaucoma users who face reduced contrast sensitivity, glare, and eye fatigue, prioritizing readability and ease of navigation/error recognition during long coding sessions.
 
