@@ -1,0 +1,34 @@
+{
+  "name": "glareguard-theme",
+  "displayName": "GlareGuard Theme (Reduced Glare)",
+  "description": "Reduced-glare, high-readability dark theme designed for long coding sessions.",
+  "version": "0.1.0",
+  "publisher": "oozoofrog",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark theme",
+    "accessibility",
+    "reduced glare",
+    "high contrast"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "GlareGuard Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/glareguard-dark-color-theme.json"
+      },
+      {
+        "label": "GlareGuard Light",
+        "uiTheme": "vs",
+        "path": "./themes/glareguard-light-color-theme.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+# GlareGuard Light (Reduced-Glare)
+# 녹내장 사용자에게 흔한 대비 민감도 저하/눈부심/시각 피로를 고려한 라이트 테마
+# - 순백(#FFFFFF) 대신 따뜻한 크림 톤 배경 사용
+# - 낮은 채도 + 충분한 대비로 장시간 가독성 확보
+
+# 기본 색상
+background = #E8E4DF
+foreground = #2D3748
+cursor-color = #7A5A2D
+cursor-text = #E8E4DF
+selection-background = #C9D6E6
+selection-foreground = #2D3748
+
+# ANSI 16색 팔레트 (저채도/눈부심 억제)
+palette = 0=#2D3748
+palette = 8=#475467
+
+palette = 1=#B42318
+palette = 9=#D92D20
+
+palette = 2=#2F6F57
+palette = 10=#3D8C6D
+
+palette = 3=#B87900
+palette = 11=#D6A100
+
+palette = 4=#1B6FD1
+palette = 12=#155AA9
+
+palette = 5=#6D5BD0
+palette = 13=#8A7BDF
+
+palette = 6=#0F766E
+palette = 14=#158A80
+
+palette = 7=#667085
+palette = 15=#F7F5F2
+

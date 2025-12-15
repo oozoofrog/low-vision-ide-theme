@@ -1,0 +1,38 @@
+# GlareGuard Dark (Reduced-Glare)
+# 녹내장 사용자에게 흔한 대비 민감도 저하/눈부심/시각 피로를 고려한 다크 테마
+# - 완전 검정/순백을 피하고 차콜/오프화이트 계열로 구성
+# - 과한 배경 강조 대신 border/underline 중심의 식별을 전제
+
+# 기본 색상
+background = #0F1115
+foreground = #E6E8EE
+cursor-color = #F2D06B
+cursor-text = #0F1115
+selection-background = #263042
+selection-foreground = #E6E8EE
+
+# ANSI 16색 팔레트 (저채도/눈부심 억제)
+palette = 0=#0F1115
+palette = 8=#2A3346
+
+palette = 1=#FF5C5C
+palette = 9=#FF8080
+
+palette = 2=#4AD295
+palette = 10=#7BE3B7
+
+palette = 3=#FFB020
+palette = 11=#FFD27A
+
+palette = 4=#4AB3FF
+palette = 12=#7AC8FF
+
+palette = 5=#B49CFF
+palette = 13=#D0C2FF
+
+palette = 6=#4AD2C5
+palette = 14=#7BE5DC
+
+palette = 7=#B8C0D4
+palette = 15=#E6E8EE
+
