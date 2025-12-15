@@ -78,6 +78,10 @@
   - Dark: `xcode/GlareGuard Dark.xccolortheme`
   - Light: `xcode/GlareGuard Light.xccolortheme`
 
+## 색상 레퍼런스(자동 생성)
+- 문서: `docs/theme-colors.ko.md` (KO), `docs/theme-colors.md` (EN)
+- 갱신: `python3 scripts/generate-theme-docs.py` (CI용: `python3 scripts/generate-theme-docs.py --check`)
+
 ## 8. Endpoint list / Request/response examples
 
 ### Endpoint list

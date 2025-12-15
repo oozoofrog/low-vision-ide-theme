@@ -80,6 +80,10 @@ This repository delivers IDE/editor themes for **Low Vision** users who often fa
   - Dark: `xcode/GlareGuard Dark.xccolortheme`
   - Light: `xcode/GlareGuard Light.xccolortheme`
 
+## Color reference (auto-generated)
+- Docs: `docs/theme-colors.md` (EN), `docs/theme-colors.ko.md` (KO)
+- Update: `python3 scripts/generate-theme-docs.py` (CI-friendly: `python3 scripts/generate-theme-docs.py --check`)
+
 ## 8. Endpoint list / Request-response examples
 
 ### Endpoint list
