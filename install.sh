@@ -211,13 +211,13 @@ run_installations() {
     echo ""
 
     if [[ $success_count -gt 0 ]]; then
-        print_success "성공: $success_count개 플랫폼"
+        print_success "성공: ${success_count}개 플랫폼"
     fi
     if [[ $fail_count -gt 0 ]]; then
-        print_error "실패: $fail_count개 플랫폼"
+        print_error "실패: ${fail_count}개 플랫폼"
     fi
     if [[ $skip_count -gt 0 ]]; then
-        print_warning "건너뜀: $skip_count개 플랫폼"
+        print_warning "건너뜀: ${skip_count}개 플랫폼"
     fi
     echo ""
 
