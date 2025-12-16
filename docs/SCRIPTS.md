@@ -12,6 +12,9 @@
 # 2) 전체 설치(비대화형)
 ./install.sh --all
 
+# 2-1) Cursor만 설치(비대화형)
+./install.sh --cursor
+
 # 3) 백업 없이 설치(덮어쓰기/이동 없이 진행)
 ./install.sh --all --no-backup
 
@@ -77,6 +80,9 @@ VS Code / Ghostty / Xcode 테마 설치를 한 번에 처리하고, 백업/결�
 # 전체 설치
 ./install.sh --all
 
+# Cursor만 설치
+./install.sh --cursor
+
 # VS Code만 설치
 ./install.sh --vscode
 
@@ -120,6 +126,34 @@ VS Code용 테마(확장 형태)를 로컬 확장 디렉토리에 설치해서, 
 - `jq`가 있으면 `vscode/package.json`을 안전하게 파싱합니다. `jq`가 없으면 `grep/sed`로 파싱하며, `package.json` 포맷이 바뀌면 실패할 수 있습니다.
 - 이전 버전(예: `oozoofrog.glareguard-theme-*`)이나 잘못된 설치(`~/.vscode/extensions/glareguard-theme`)가 있으면 백업 후 정리합니다.
 - `code` 커맨드(VS Code CLI)가 없어도 파일은 설치되지만, VS Code가 즉시 인식하지 못할 수 있습니다. 설치 후 VS Code를 재시작하세요.
+
+---
+
+### `scripts/install-cursor.sh` — Cursor IDE 테마 설치
+
+**Why (언제 쓰나)**  
+Cursor IDE에서 VS Code 테마(확장 형태)를 로컬 확장 디렉토리에 설치해, `GlareGuard Dark/Light`를 선택 가능하게 만들 때 사용합니다.  
+`install.sh --cursor`가 내부에서 이 스크립트를 로드/호출합니다.
+
+**What (실행 예시)**  
+
+```bash
+# 단독 실행(직접 호출도 가능)
+./scripts/install-cursor.sh
+
+# 통합 설치에서 호출(권장)
+./install.sh --cursor
+```
+
+설치 대상 디렉토리(동적으로 결정):
+
+- `~/.cursor/extensions/<publisher>.<name>-<version>`
+- 현재 리포지토리 기준 예: `~/.cursor/extensions/oozoofrog.glareguard-theme-0.1.0`
+
+**주의사항/트러블슈팅**
+
+- Cursor 확장 디렉토리는 기본적으로 `~/.cursor/extensions`를 사용합니다. (디렉토리가 없어도 설치 과정에서 생성합니다.)
+- 설치 후 Cursor를 재시작해야 테마가 목록에 나타날 수 있습니다.
 
 ---
 

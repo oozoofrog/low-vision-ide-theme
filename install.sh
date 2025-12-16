@@ -17,6 +17,7 @@ source "$SCRIPTS_DIR/common.sh"
 INSTALL_VSCODE=false
 INSTALL_GHOSTTY=false
 INSTALL_XCODE=false
+INSTALL_CURSOR=false
 INTERACTIVE=true
 
 # ============================================================
@@ -34,6 +35,7 @@ ${BOLD}옵션:${NC}
     -h, --help       도움말 출력
     -a, --all        모든 플랫폼에 설치
     -v, --vscode     VS Code에 설치
+    -c, --cursor     Cursor IDE에 설치
     -g, --ghostty    Ghostty에 설치
     -x, --xcode      Xcode에 설치 (macOS 전용)
     --no-backup      기존 파일 백업 안 함
@@ -59,6 +61,7 @@ parse_args() {
                 ;;
             -a|--all)
                 INSTALL_VSCODE=true
+                INSTALL_CURSOR=true
                 INSTALL_GHOSTTY=true
                 INSTALL_XCODE=true
                 INTERACTIVE=false
@@ -66,6 +69,11 @@ parse_args() {
                 ;;
             -v|--vscode)
                 INSTALL_VSCODE=true
+                INTERACTIVE=false
+                shift
+                ;;
+            -c|--cursor)
+                INSTALL_CURSOR=true
                 INTERACTIVE=false
                 shift
                 ;;
@@ -107,12 +115,13 @@ show_menu() {
     echo "설치할 플랫폼을 선택하세요:"
     echo ""
     echo "  [1] VS Code"
-    echo "  [2] Ghostty"
+    echo "  [2] Cursor IDE"
+    echo "  [3] Ghostty"
     if is_macos; then
-        echo "  [3] Xcode"
-        echo "  [4] 전체 설치"
+        echo "  [4] Xcode"
+        echo "  [5] 전체 설치"
     else
-        echo "  [3] 전체 설치 (Xcode 제외)"
+        echo "  [4] 전체 설치 (Xcode 제외)"
     fi
     echo "  [0] 취소"
     echo ""
@@ -126,19 +135,26 @@ show_menu() {
             INSTALL_VSCODE=true
             ;;
         2)
-            INSTALL_GHOSTTY=true
+            INSTALL_CURSOR=true
             ;;
         3)
-            if is_macos; then
-                INSTALL_XCODE=true
-            else
-                INSTALL_VSCODE=true
-                INSTALL_GHOSTTY=true
-            fi
+            # [3] Ghostty (모든 OS에서 Ghostty만 설치)
+            INSTALL_GHOSTTY=true
             ;;
         4)
             if is_macos; then
+                INSTALL_XCODE=true
+            else
+                # [4] 전체 설치 (Xcode 제외)
                 INSTALL_VSCODE=true
+                INSTALL_CURSOR=true
+                INSTALL_GHOSTTY=true
+            fi
+            ;;
+        5)
+            if is_macos; then
+                INSTALL_VSCODE=true
+                INSTALL_CURSOR=true
                 INSTALL_GHOSTTY=true
                 INSTALL_XCODE=true
             else
@@ -172,6 +188,16 @@ run_installations() {
     # VS Code 설치
     if [[ "$INSTALL_VSCODE" == "true" ]]; then
         if source "$SCRIPTS_DIR/install-vscode.sh" && install_vscode; then
+            success_count=$((success_count + 1))
+        else
+            fail_count=$((fail_count + 1))
+        fi
+        echo ""
+    fi
+
+    # Cursor 설치
+    if [[ "$INSTALL_CURSOR" == "true" ]]; then
+        if source "$SCRIPTS_DIR/install-cursor.sh" && install_cursor; then
             success_count=$((success_count + 1))
         else
             fail_count=$((fail_count + 1))
@@ -241,7 +267,7 @@ main() {
     fi
 
     # 선택된 플랫폼이 없으면 종료
-    if [[ "$INSTALL_VSCODE" == "false" && "$INSTALL_GHOSTTY" == "false" && "$INSTALL_XCODE" == "false" ]]; then
+    if [[ "$INSTALL_VSCODE" == "false" && "$INSTALL_CURSOR" == "false" && "$INSTALL_GHOSTTY" == "false" && "$INSTALL_XCODE" == "false" ]]; then
         print_info "설치할 플랫폼이 선택되지 않았습니다"
         exit "$EXIT_SUCCESS"
     fi
