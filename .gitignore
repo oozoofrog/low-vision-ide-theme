@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# VS Code/Cursor theme extension (local dev artifacts)
+vscode/node_modules/
+vscode/package-lock.json
+vscode/pnpm-lock.yaml
+vscode/yarn.lock
+*.vsix
+
+# Local sandbox/temp dirs (scripts/tests)
+.tmp-*/
+
+
